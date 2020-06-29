@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./App.css";
 import ImageUploadForm from "./ImageUploadForm";
 import ImageCanvas from "./ImageCanvas";
@@ -36,6 +36,7 @@ const App = () => {
       active: false,
     },
   ]);
+  const inputRef = useRef(null);
 
   const handleChangeFile = (files) => {
     // const files = e.target.files;
@@ -49,7 +50,6 @@ const App = () => {
 
     const img = new Image();
     img.src = imageUrl;
-
     const imgWidth = img.width;
     const imgHeight = img.height;
     console.log(img)
@@ -60,7 +60,11 @@ const App = () => {
     setImage(imageUrl);
   };
 
-  const clearImageSrc = () => {
+  const clearImageSrc = (fileInput) => {
+    fileInput.value = null
+    // fileInput.files = []
+    // fileInput.reset()
+    // fileInput.ref = null
     setImage("");
   };
 
@@ -83,6 +87,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <ImageUploadForm
+          inputRef={inputRef}
           imageFile={imageFile}
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}

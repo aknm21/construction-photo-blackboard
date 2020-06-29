@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import ImageDropZone from './ImageDropZone';
 
 const ImageUploadForm = (props) => {
-  const { clearImageSrc, handleChangeFile } = props
+  const { clearImageSrc, handleChangeFile, inputRef } = props
   const fileInput = document.querySelector("#file-input")
-  const inputRef = useRef(null);
   return (
     <div>
       <h2>ImageUploadForm</h2>
@@ -20,7 +19,7 @@ const ImageUploadForm = (props) => {
       />
       <button
         type="button"
-        onClick={clearImageSrc}
+        onClick={() => clearImageSrc(fileInput)}
       >
         クリアー
       </button>
