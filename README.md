@@ -213,3 +213,9 @@ handleChangeFile: function(e) {
 [Fabric.js Javascript Canvas Library](http://fabricjs.com/)
 
 [canvasを便利にするfabric.jsの紹介と導入方法 - Qiita](https://qiita.com/seimiyajun/items/7c99271f0c720feac306)
+
+### React
+
+[最初に一回だけ動くuseEffect（componentDidMount的な） - Qiita](https://qiita.com/sijiaoh/items/95aba67e589515a06b31)
+
+[How To Use The HTML Drag-And-Drop API In React — Smashing Magazine](https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/)
