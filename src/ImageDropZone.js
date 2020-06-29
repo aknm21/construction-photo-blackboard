@@ -1,7 +1,7 @@
 import React from "react";
 
 const ImageDropZone = (props) => {
-  const { fileInput } = props;
+  const { fileInput, handleChangeFile } = props;
   const fileArea = document.querySelector("#dragDropArea");
 
   const style = {
@@ -38,8 +38,8 @@ const ImageDropZone = (props) => {
     e.stopPropagation();
     fileArea.classList.remove("dragenter");
     const files = e.dataTransfer.files;
-    console.table(files);
     fileInput.files = files;
+    handleChangeFile(files)
     console.log("handleDrop");
   };
 

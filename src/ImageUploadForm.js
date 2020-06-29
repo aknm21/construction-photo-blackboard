@@ -10,12 +10,13 @@ const ImageUploadForm = (props) => {
       <h2>ImageUploadForm</h2>
       <ImageDropZone
         fileInput={fileInput}
+        handleChangeFile={handleChangeFile}
       />
       <input
         id="file-input"
         type="file"
         ref={inputRef}
-        onChange={handleChangeFile}
+        onChange={(e) => handleChangeFile(e.target.files)}
       />
       <button
         type="button"

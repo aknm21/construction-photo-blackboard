@@ -9,7 +9,7 @@ const createObjectURL =
 
 const App = () => {
   // const [img, inverse] = useState({done: false, id: 0});
-  const [uploadImage, setImage] = useState("");
+  const [imageFile, setImage] = useState("");
   const [canvas, updateCanvas] = useState(null);
   const [boardFormat, setBoard] = useState([
     {
@@ -37,17 +37,23 @@ const App = () => {
     },
   ]);
 
-  const handleChangeFile = (e) => {
-    const files = e.target.files;
-    if (!files.length) return;
-
+  const handleChangeFile = (files) => {
+    // const files = e.target.files;
+    console.table(files);
+    // TODO: 画像判定入れる
+    if (!files.length) {
+      // setImage("");
+      return;
+    }
     const imageUrl = createObjectURL(files[0]);
+
     const img = new Image();
     img.src = imageUrl;
 
     const imgWidth = img.width;
     const imgHeight = img.height;
-    console.log(files[0]);
+    console.log(img)
+    // console.log(files[0]);
     console.log(imgWidth);
     console.log(imgHeight);
 
@@ -77,13 +83,14 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <ImageUploadForm
+          imageFile={imageFile}
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}
         />
         <ImageCanvas
           canvas={canvas}
           updateCanvas={updateCanvas}
-          uploadImage={uploadImage}
+          imageFile={imageFile}
         />
         <Controller
           boardFormat={boardFormat}

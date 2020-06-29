@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { fabric } from 'fabric';
 
 const ImageCanvas = (props) => {
-  const { uploadImage, canvas, updateCanvas } = props
+  const { imageFile, canvas, updateCanvas } = props
 
   // canvas.
   useEffect(() => {
@@ -13,7 +13,7 @@ const ImageCanvas = (props) => {
   return (
     <div>
       ImageCanvas
-      <img src={uploadImage} alt="" style={{maxWidth: "80%", maxHeight: "50%"}} />
+      <img src={imageFile} alt="" style={{maxWidth: "80%", maxHeight: "50%"}} />
       <canvas id="c"></canvas>
     </div>
   );
