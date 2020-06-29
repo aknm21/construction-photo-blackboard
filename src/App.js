@@ -1,23 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import ImageUploadForm from './ImageUploadForm';
+import ImageCanvas from './ImageCanvas';
+import Controller from './Controller';
 
-function App() {
+const createObjectURL = (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
+
+const App = () => {
+  // const [img, inverse] = useState({done: false, id: 0});
+  const [uploadImage, setImage] = useState("");
+  // const [boardFormat, setBoard] = useState([])
+
+  // const handleToggle = (img) => {
+  //   inverse({done: !img.done, id: img.id})
+  // }
+
+  const handleChangeFile = (e) => {
+    const files = e.target.files;
+    const imageUrl = createObjectURL(files[0]);
+    setImage(imageUrl);
+  }
+
+  const clearImageSrc = () => {
+    setImage("");
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ImageUploadForm
+          clearImageSrc={clearImageSrc}
+          handleChangeFile={handleChangeFile}
+          />
+        <ImageCanvas
+          uploadImage={uploadImage}
+        />
+        <Controller />
       </header>
     </div>
   );
