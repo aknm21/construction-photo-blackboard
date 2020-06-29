@@ -8,8 +8,8 @@ const createObjectURL =
   (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
 
 const App = () => {
-  // const [img, inverse] = useState({done: false, id: 0});
-  const [imageFile, setImage] = useState("");
+  const imageFileInitialValue = { url: "", width: NaN, height: NaN };
+  const [imageFile, setImageFile] = useState(imageFileInitialValue);
   const [canvas, updateCanvas] = useState(null);
   const [boardFormat, setBoard] = useState([
     {
@@ -40,32 +40,32 @@ const App = () => {
 
   const handleChangeFile = (files) => {
     // const files = e.target.files;
-    console.table(files);
+    // console.table(files);
     // TODO: 画像判定入れる
     if (!files.length) {
-      // setImage("");
+      // setImageFile("");
       return;
     }
     const imageUrl = createObjectURL(files[0]);
-
-    const img = new Image();
-    img.src = imageUrl;
-    const imgWidth = img.width;
-    const imgHeight = img.height;
-    console.log(img)
-    // console.log(files[0]);
-    console.log(imgWidth);
-    console.log(imgHeight);
-
-    setImage(imageUrl);
+    console.log({ imageFile });
+    const image = new Image();
+    image.src = imageUrl;
+    image.onload = () => {
+      const newImage = {
+        src: imageUrl,
+        width: image.width,
+        height: image.height,
+      };
+      setImageFile(newImage);
+    };
   };
 
   const clearImageSrc = (fileInput) => {
-    fileInput.value = null
+    fileInput.value = null;
     // fileInput.files = []
     // fileInput.reset()
     // fileInput.ref = null
-    setImage("");
+    setImageFile(imageFileInitialValue);
   };
 
   const updateBoardSelect = (e) => {
@@ -88,14 +88,13 @@ const App = () => {
       <header className="App-header">
         <ImageUploadForm
           inputRef={inputRef}
-          imageFile={imageFile}
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}
         />
         <ImageCanvas
+          imageFile={imageFile}
           canvas={canvas}
           updateCanvas={updateCanvas}
-          imageFile={imageFile}
         />
         <Controller
           boardFormat={boardFormat}
