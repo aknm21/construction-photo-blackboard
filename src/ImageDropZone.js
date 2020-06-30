@@ -2,7 +2,6 @@ import React from "react";
 
 const ImageDropZone = (props) => {
   const { fileInput, handleChangeFile } = props;
-  const fileArea = document.querySelector("#dragDropArea");
 
   const style = {
     backgroundColor: "#f4f4f4",
@@ -24,21 +23,24 @@ const ImageDropZone = (props) => {
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    fileArea.classList.remove("dragover");
+    e.target.classList.toggle("dragover");
     console.log("handleDragLeave");
   };
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    fileArea.classList.add("dragover");
+    e.target.classList.toggle("dragover");
     console.log("handleDragOver");
   };
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    fileArea.classList.remove("dragenter");
+    e.target.classList.toggle("dragenter");
     const files = e.dataTransfer.files;
-    fileInput.files = files;
+    if (fileInput) {
+      fileInput.files = files;
+    }
+    console.log(fileInput)
     handleChangeFile(files)
     console.log("handleDrop");
   };
