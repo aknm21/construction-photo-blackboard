@@ -6,7 +6,7 @@ const Controller = (props) => {
   const inputs = boardFormat[activeBoard.id].inputs;
   return (
     <div>
-      <h2>Controller</h2>
+      <h2>黒板の操作</h2>
       <select onChange={(e) => updateBoardSelect(e)}>
         {boardFormat.map((board) => {
           return (
@@ -16,21 +16,30 @@ const Controller = (props) => {
           );
         })}
       </select>
-      {inputs.map((input, i) => {
-        const id = `board-input-${activeBoard.id}-${i}`;
-        return (
-          <li key={id}>
-            <label>
-              {input.label}
-              <input
-                onChange={(e) => updateInput(e.target.value, i, activeBoard.id)}
-                value={input.value}
-                type={input.type}
-              />
-            </label>
-          </li>
-        );
-      })}
+      <table className="controller-table">
+        <tbody>
+          {inputs.map((input, i) => {
+            const id = `board-input-${activeBoard.id}-${i}`;
+            return (
+              <tr key={id}>
+                <td>
+                  <label for={id}>
+                    {input.label}
+                  </label>
+                </td>
+                <td>
+                  <input
+                    id={id}
+                    onChange={(e) => updateInput(e.target.value, i, activeBoard.id)}
+                    value={input.value}
+                    type={input.type}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

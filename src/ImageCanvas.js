@@ -103,8 +103,8 @@ const BoardGroup = (props) => {
 };
 
 const ImageCanvas = (props) => {
-  // const { imageFile, canvas, updateCanvas } = props;
-  const { imageFile, boardFormat } = props;
+  const { handleChangeFile, imageFile, boardFormat } = props;
+  const fileInput = document.querySelector("#file-input");
 
   const board = boardFormat.filter((board) => board.active)[0];
   // const svgString = board.svgCode;
@@ -126,16 +126,56 @@ const ImageCanvas = (props) => {
       )
     : 1;
 
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("handleDragEnter");
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.toggle("dragover");
+    console.log("handleDragLeave");
+  };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.toggle("dragover");
+    console.log("handleDragOver");
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.classList.toggle("dragenter");
+    const files = e.dataTransfer.files;
+    if (fileInput) {
+      fileInput.files = files;
+    }
+    console.log(fileInput);
+    handleChangeFile(files);
+    console.log("handleDrop");
+  };
+
   return (
     <div
+      id="dragDropArea"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
       style={{
-        border: `1px red solid`,
         transform: isOverSize ? `scale(${scale})` : null,
+        transformOrigin: "left top",
+        margin: "0 auto 1.5em",
+        width: imageFile.width || 300,
+        // maxHeight: imageFile.height * scale || 300
+        height: Math.ceil(imageFile.height * scale) || 300,
       }}
     >
       <Stage
         width={imageFile.width || 300}
         height={imageFile.height || 300}
+        className="stage"
       >
         {imageFile.src && (
           <Layer>

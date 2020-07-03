@@ -4,14 +4,14 @@ import ImageUploadForm from "./ImageUploadForm";
 import ImageCanvas from "./ImageCanvas";
 import Controller from "./Controller";
 
-import Board1 from './assets/board1.svg';
-import Board2 from './assets/board2.svg';
+import Board1 from "./assets/board1.svg";
+import Board2 from "./assets/board2.svg";
 
 const createObjectURL =
   (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
 
 const App = () => {
-  const imageFileInitialValue = { url: "", width: NaN, height: NaN };
+  const imageFileInitialValue = { src: null, width: NaN, height: NaN };
   const [imageFile, setImageFile] = useState(imageFileInitialValue);
   // const [canvas, updateCanvas] = useState(null);
   const [boardFormat, setBoard] = useState([
@@ -67,7 +67,7 @@ const App = () => {
       ],
       active: true,
       color: "#000000",
-      fontSize: 30
+      fontSize: 30,
     },
     {
       id: 1,
@@ -110,13 +110,12 @@ const App = () => {
       ],
       active: false,
       color: "#ffffff",
-      fontSize: 30
+      fontSize: 30,
     },
   ]);
   const inputRef = useRef(null);
 
   const handleChangeFile = (files) => {
-    // const files = e.target.files;
     // console.table(files);
     // TODO: 画像判定入れる
     if (!files.length) {
@@ -124,7 +123,7 @@ const App = () => {
       return;
     }
     const imageUrl = createObjectURL(files[0]);
-    console.log({ imageFile });
+    // console.log({ imageFile });
     const image = new Image();
     image.src = imageUrl;
     image.onload = () => {
@@ -159,27 +158,43 @@ const App = () => {
     const updated = boardFormat.slice();
     updated[activeBoardID].inputs[i].value = value;
     setBoard(updated);
-    console.log(boardFormat);
+    // console.log(boardFormat);
   };
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header
+        className={imageFile.src ? "App-header active" : "App-header"}
+      >
+        <h1>
+          <span role="img" aria-label="Construction">🚧</span>
+          <span role="img" aria-label="Construction">🚧</span>
+          <span role="img" aria-label="Pick">⛏️</span>
+          <span role="img" aria-label="Camera">📷</span>
+          工事写真合成アプリ
+          <span role="img" aria-label="Tractor">🚜</span>
+          <span role="img" aria-label="Construction Worker">👷</span>
+          <span role="img" aria-label="Construction">🚧</span>
+          <span role="img" aria-label="Construction">🚧</span>
+        </h1>
+      </header>
+      <main>
+        <ImageCanvas
+          imageFile={imageFile}
+          boardFormat={boardFormat}
+          handleChangeFile={handleChangeFile}
+        />
         <ImageUploadForm
           inputRef={inputRef}
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}
         />
-        <ImageCanvas
-          imageFile={imageFile}
-          boardFormat={boardFormat}
-        />
-        <Controller
+        {imageFile.src && <Controller
           boardFormat={boardFormat}
           updateBoardSelect={updateBoardSelect}
           updateInput={updateInput}
-        />
-      </header>
+        />}
+      </main>
     </div>
   );
 };

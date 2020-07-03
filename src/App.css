@@ -1,3 +1,16 @@
+html {
+  background-color: #222831;
+  color: #CCCCCC;
+}
+
+.controller-table {
+  margin: 0 auto;
+}
+
+.konvajs-content {
+  border: 1px #afbaca dashed;
+}
+
 .App {
   text-align: center;
 }
@@ -14,14 +27,20 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #393e46;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(5px + 1vmin);
+  transition: font-size 1s;
   color: white;
+  margin-bottom: 1em;
+}
+
+.App-header.active {
+  font-size: calc(5px + .5vmin);
 }
 
 .App-link {
