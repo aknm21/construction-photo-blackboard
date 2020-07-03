@@ -71,19 +71,19 @@ const BoardGroup = (props) => {
       >
         <URLImage url={props.board.svgCode} width={320} height={240} />
         {props.board.inputs.map((input, i) => {
-            return (
-              <Text
-                fontSize={props.board.fontSize}
-                text={input.value}
-                key={i}
-                x={input.offsetX+6}
-                y={input.offsetY+6}
-                width={input.width-12}
-                height={input.height-12}
-                fill={props.board.color}
-              />
-            );
-          })}
+          return (
+            <Text
+              fontSize={props.board.fontSize}
+              text={input.value}
+              key={i}
+              x={input.offsetX + 6}
+              y={input.offsetY + 6}
+              width={input.width - 12}
+              height={input.height - 12}
+              fill={props.board.color}
+            />
+          );
+        })}
       </Group>
       {isSelected && (
         <Transformer
@@ -113,24 +113,50 @@ const ImageCanvas = (props) => {
   const [boardX, setBoardX] = useState(50);
   const [boardY, setBoardY] = useState(50);
 
+  const safeAreaWidth = window.innerWidth * 0.95;
+  const safeAreaHeight = window.innerHeight * 0.95;
+
+  const isOverSize =
+    safeAreaWidth <= imageFile.width || safeAreaHeight <= imageFile.height;
+
+  const scale = isOverSize
+    ? Math.min(
+        safeAreaWidth / imageFile.width,
+        safeAreaHeight / imageFile.height
+      )
+    : 1;
+
+  // const stageWidth = isOverSize ? imageFile.width * scale : imageFile.width
+  // const stageHeight = isOverSize ? imageFile.height * scale : imageFile.height
+
+  // console.log(scale)
+
   return (
     <div>
       {/* <h2>ImageCanvas</h2> */}
       <div>
-        <Stage width={imageFile.width || 300} height={imageFile.height || 300}>
-          {imageFile.src && <Layer>
-            <URLImage url={imageFile.src} />
-            <BoardGroup
-              {...{
-                board,
-                boardFormat,
-                boardX,
-                setBoardX,
-                boardY,
-                setBoardY,
-              }}
-            />
-          </Layer>}
+        <Stage
+          width={imageFile.width || 300}
+          height={imageFile.height || 300}
+          // scaleX={scale}
+          // scaleY={scale}
+          style={{ border: "1px red solid", transform: `scale(${scale})` }}
+        >
+          {imageFile.src && (
+            <Layer>
+              <URLImage url={imageFile.src} />
+              <BoardGroup
+                {...{
+                  board,
+                  boardFormat,
+                  boardX,
+                  setBoardX,
+                  boardY,
+                  setBoardY,
+                }}
+              />
+            </Layer>
+          )}
         </Stage>
       </div>
       {/* <h2>Inputs</h2> */}
