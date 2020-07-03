@@ -1,13 +1,5 @@
 import React, { /* useEffect, */ useRef, useState, useEffect } from "react";
-// import Konva from 'konva';
-import {
-  Stage,
-  Layer,
-  Text,
-  Image,
-  Group,
-  Transformer,
-} from "react-konva";
+import { Stage, Layer, Text, Image, Group, Transformer } from "react-konva";
 import useImage from "use-image";
 
 const URLImage = (props) => {
@@ -17,31 +9,37 @@ const URLImage = (props) => {
   // const [y, setY] = useState(50);
 
   // status can be "loading", "loaded" or "failed"
-  const draggableProps = props.draggable
-    ? {
-        draggable: true,
-        x: props.x,
-        y: props.y,
-        onDragStart: () => {
-          // setIsDragging(true)
-        },
-        onDragEnd: (e) => {
-          // setIsDragging(false)
-          props.setX(e.target.x());
-          props.setY(e.target.y());
-        },
-      }
-    : null;
+  // const draggableProps = props.draggable
+  //   ? {
+  //       draggable: true,
+  //       x: props.x,
+  //       y: props.y,
+  //       onDragStart: () => {
+  //         // setIsDragging(true)
+  //       },
+  //       onDragEnd: (e) => {
+  //         // setIsDragging(false)
+  //         props.setX(e.target.x());
+  //         props.setY(e.target.y());
+  //       },
+  //     }
+  //   : null;
 
   console.log(props.url, status);
-  return <Image {...draggableProps} image={image} width={props.width} height={props.height} />;
+  return (
+    <Image
+      // {...draggableProps}
+      image={image}
+      width={props.width}
+      height={props.height}
+    />
+  );
 };
 
 const BoardGroup = (props) => {
   const [isSelected, toggleSelect] = useState(false);
   const groupRef = useRef();
   const trRef = useRef();
-
   useEffect(() => {
     console.log(isSelected);
     if (isSelected) {
@@ -71,18 +69,21 @@ const BoardGroup = (props) => {
           toggleSelect(!isSelected);
         }}
       >
-        <URLImage url={props.url} width={640} height={480} />
+        <URLImage url={props.board.svgCode} width={320} height={240} />
         {props.board.inputs.map((input, i) => {
-          return (
-            <Text
-              key={`${props.board.id}-${i}`}
-              text={input.value}
-              fontSize={60}
-              x={input.offsetX}
-              y={input.offsetY}
-            />
-          );
-        })}
+            return (
+              <Text
+                fontSize={props.board.fontSize}
+                text={input.value}
+                key={i}
+                x={input.offsetX+6}
+                y={input.offsetY+6}
+                width={input.width-12}
+                height={input.height-12}
+                fill={props.board.color}
+              />
+            );
+          })}
       </Group>
       {isSelected && (
         <Transformer
@@ -106,34 +107,33 @@ const ImageCanvas = (props) => {
   const { imageFile, boardFormat } = props;
 
   const board = boardFormat.filter((board) => board.active)[0];
-  const svgString = board.svgCode;
-  const url = "data:image/svg+xml;base64," + window.btoa(svgString);
+  // const svgString = board.svgCode;
+  // const url = "data:image/svg+xml;base64," + window.btoa(svgString);
 
   const [boardX, setBoardX] = useState(50);
   const [boardY, setBoardY] = useState(50);
 
   return (
     <div>
-      <h2>ImageCanvas</h2>
+      {/* <h2>ImageCanvas</h2> */}
       <div>
         <Stage width={imageFile.width || 300} height={imageFile.height || 300}>
-          <Layer>
-            {imageFile.src && <URLImage url={imageFile.src} />}
-            {imageFile.src && (
-              <BoardGroup
-                {...{
-                  board,
-                  url,
-                  boardX,
-                  setBoardX,
-                  boardY,
-                  setBoardY,
-                }}
-              />
-            )}
-          </Layer>
+          {imageFile.src && <Layer>
+            <URLImage url={imageFile.src} />
+            <BoardGroup
+              {...{
+                board,
+                boardFormat,
+                boardX,
+                setBoardX,
+                boardY,
+                setBoardY,
+              }}
+            />
+          </Layer>}
         </Stage>
       </div>
+      {/* <h2>Inputs</h2> */}
       {/* {imageFile.src ? (
         <>
           <h3>Preview</h3>
