@@ -126,39 +126,33 @@ const ImageCanvas = (props) => {
       )
     : 1;
 
-  // const stageWidth = isOverSize ? imageFile.width * scale : imageFile.width
-  // const stageHeight = isOverSize ? imageFile.height * scale : imageFile.height
-
-  // console.log(scale)
-
   return (
-    <div>
-      {/* <h2>ImageCanvas</h2> */}
-      <div>
-        <Stage
-          width={imageFile.width || 300}
-          height={imageFile.height || 300}
-          // scaleX={scale}
-          // scaleY={scale}
-          style={{ border: "1px red solid", transform: `scale(${scale})` }}
-        >
-          {imageFile.src && (
-            <Layer>
-              <URLImage url={imageFile.src} />
-              <BoardGroup
-                {...{
-                  board,
-                  boardFormat,
-                  boardX,
-                  setBoardX,
-                  boardY,
-                  setBoardY,
-                }}
-              />
-            </Layer>
-          )}
-        </Stage>
-      </div>
+    <div
+      style={{
+        border: `1px red solid`,
+        transform: isOverSize ? `scale(${scale})` : null,
+      }}
+    >
+      <Stage
+        width={imageFile.width || 300}
+        height={imageFile.height || 300}
+      >
+        {imageFile.src && (
+          <Layer>
+            <URLImage url={imageFile.src} />
+            <BoardGroup
+              {...{
+                board,
+                boardFormat,
+                boardX,
+                setBoardX,
+                boardY,
+                setBoardY,
+              }}
+            />
+          </Layer>
+        )}
+      </Stage>
       {/* <h2>Inputs</h2> */}
       {/* {imageFile.src ? (
         <>
