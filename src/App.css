@@ -1,6 +1,14 @@
 html {
-  background-color: #222831;
-  color: #CCCCCC;
+  background-color: #13161b;
+  background-image: repeating-linear-gradient(
+    135deg,
+    #13161b,
+    #13161b 20px,
+    #222831 20px,
+    #222831 24px
+  );;
+  background-attachment: fixed;
+  color: #cccccc;
 }
 
 .controller-table {
@@ -8,14 +16,36 @@ html {
 }
 
 .konvajs-content {
-  border: 1px #afbaca dashed;
+  box-shadow: 0 0 3px 1px rgba(255,255,255,1) inset;
+  background-color: #13161b;
+}
+
+.konvajs-content canvas {
+  transition: 0.3s opacity ease-in;
+}
+
+.konvajs-content canvas.dragover {
+  opacity: 0.5;
+}
+
+.canvas-wrapper {
+  margin: 0 auto 1.5em;
+  position: relative;
+}
+
+.canvas-text {
+  font-size: large;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);;
 }
 
 .App {
   text-align: center;
 }
 
-.App-logo {
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -24,10 +54,9 @@ html {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
+} */
 
 .App-header {
-  background-color: #393e46;
   /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
@@ -40,7 +69,7 @@ html {
 }
 
 .App-header.active {
-  font-size: calc(5px + .5vmin);
+  font-size: calc(5px + 0.5vmin);
 }
 
 .App-link {

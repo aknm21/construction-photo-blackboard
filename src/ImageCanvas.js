@@ -1,4 +1,4 @@
-import React, { /* useEffect, */ useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Text, Image, Group, Transformer } from "react-konva";
 import useImage from "use-image";
 
@@ -25,67 +25,82 @@ const URLImage = (props) => {
   //     }
   //   : null;
 
-  console.log(props.url, status);
+  // console.log(props.url, status);
   return (
-    <Image
-      // {...draggableProps}
-      image={image}
-      width={props.width}
-      height={props.height}
-    />
+    status === "loaded" && (
+      <Image
+        // {...draggableProps}
+        image={image}
+        {...props}
+      />
+    )
   );
 };
 
 const BoardGroup = (props) => {
-  const [isSelected, toggleSelect] = useState(false);
+  const {
+    board,
+    // boardFormat,
+    boardX,
+    setBoardX,
+    boardY,
+    setBoardY,
+    isBoardSelected,
+    setIsBoardSelected,
+  } = props;
+
+  // const [isSelected, toggleSelect] = useState(false);
   const groupRef = useRef();
   const trRef = useRef();
   useEffect(() => {
-    console.log(isSelected);
-    if (isSelected) {
+    // console.log(isBoardSelected);
+    if (isBoardSelected) {
       // we need to attach transformer manually
-      console.log(trRef, groupRef);
+      // console.log(trRef, groupRef);
       trRef.current.setNode(groupRef.current);
       trRef.current.getLayer().batchDraw();
     }
-  }, [isSelected]);
+  }, [isBoardSelected]);
 
   return (
     <>
       <Group
         ref={groupRef}
         draggable={true}
-        x={props.boardX}
-        setX={props.setBoardX}
-        y={props.boardY}
-        setY={props.setBoardY}
+        x={boardX}
+        setX={setBoardX}
+        y={boardY}
+        setY={setBoardY}
         onmouseover={() => {
-          document.body.style.cursor = "pointer";
+          document.body.style.cursor = "move";
         }}
         onmouseout={() => {
           document.body.style.cursor = "default";
         }}
+        onDragStart={() => {
+          setIsBoardSelected(true);
+        }}
         onClick={() => {
-          toggleSelect(!isSelected);
+          setIsBoardSelected(!isBoardSelected);
         }}
       >
-        <URLImage url={props.board.svgCode} width={320} height={240} />
-        {props.board.inputs.map((input, i) => {
+        <URLImage url={board.svgCode} width={320} height={240} />
+        {board.inputs.map((input, i) => {
           return (
             <Text
-              fontSize={props.board.fontSize}
+              fontSize={board.fontSize}
               text={input.value}
               key={i}
               x={input.offsetX + 6}
               y={input.offsetY + 6}
               width={input.width - 12}
               height={input.height - 12}
-              fill={props.board.color}
+              fill={board.color}
             />
           );
         })}
       </Group>
-      {isSelected && (
+      {isBoardSelected && (
         <Transformer
           ref={trRef}
           rotateEnabled={false}
@@ -103,15 +118,20 @@ const BoardGroup = (props) => {
 };
 
 const ImageCanvas = (props) => {
-  const { handleChangeFile, imageFile, boardFormat } = props;
-  const fileInput = document.querySelector("#file-input");
+  const {
+    handleChangeFile,
+    imageFile,
+    boardFormat,
+    isBoardSelected,
+    setIsBoardSelected,
+  } = props;
 
   const board = boardFormat.filter((board) => board.active)[0];
   // const svgString = board.svgCode;
   // const url = "data:image/svg+xml;base64," + window.btoa(svgString);
 
-  const [boardX, setBoardX] = useState(50);
-  const [boardY, setBoardY] = useState(50);
+  const [boardX, setBoardX] = useState(15);
+  const [boardY, setBoardY] = useState(15);
 
   const safeAreaWidth = window.innerWidth * 0.95;
   const safeAreaHeight = window.innerHeight * 0.95;
@@ -129,70 +149,87 @@ const ImageCanvas = (props) => {
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    e.target.classList.add("dragover");
     console.log("handleDragEnter");
   };
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.target.classList.toggle("dragover");
+    e.target.classList.remove("dragover");
     console.log("handleDragLeave");
   };
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.target.classList.toggle("dragover");
     console.log("handleDragOver");
   };
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.target.classList.toggle("dragenter");
+    e.target.classList.remove("dragover");
     const files = e.dataTransfer.files;
+    const fileInput = document.querySelector("#file-input");
+
     if (fileInput) {
       fileInput.files = files;
     }
-    console.log(fileInput);
+    // console.log(fileInput);
     handleChangeFile(files);
     console.log("handleDrop");
   };
 
   return (
     <div
-      id="dragDropArea"
+      className="canvas-wrapper"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       style={{
-        transform: isOverSize ? `scale(${scale})` : null,
-        transformOrigin: "left top",
-        margin: "0 auto 1.5em",
-        width: imageFile.width || 300,
+        // margin: "0 auto 1.5em",
+        width: isOverSize ? Math.ceil(imageFile.width * scale) : imageFile.width || 450,
         // maxHeight: imageFile.height * scale || 300
-        height: Math.ceil(imageFile.height * scale) || 300,
+        height: isOverSize ? Math.ceil(imageFile.height * scale) : imageFile.height || 300,
       }}
     >
       <Stage
-        width={imageFile.width || 300}
+        width={imageFile.width || 450}
         height={imageFile.height || 300}
         className="stage"
+        style={{
+          transform: isOverSize ? `scale(${scale})` : null,
+          transformOrigin: "left top",
+        }}
       >
         {imageFile.src && (
           <Layer>
-            <URLImage url={imageFile.src} />
+            <URLImage
+              url={imageFile.src}
+              onTouchEnd={() => {
+                setIsBoardSelected(false);
+              }}
+              onclick={() => {
+                setIsBoardSelected(false);
+              }}
+            />
             <BoardGroup
               {...{
                 board,
-                boardFormat,
+                // boardFormat,
                 boardX,
                 setBoardX,
                 boardY,
                 setBoardY,
+                isBoardSelected,
+                setIsBoardSelected,
               }}
             />
           </Layer>
         )}
       </Stage>
+      {!imageFile.src && (
+        <div className="canvas-text">画像をドラッグドロップ</div>
+      )}
       {/* <h2>Inputs</h2> */}
       {/* {imageFile.src ? (
         <>

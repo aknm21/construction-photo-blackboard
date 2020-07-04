@@ -5,6 +5,7 @@ const ImageUploadForm = (props) => {
   const fileInput = document.querySelector("#file-input");
   return (
     <div>
+      <h2>合成元画像選択</h2>
       <input
         id="file-input"
         type="file"

@@ -11,9 +11,16 @@ const createObjectURL =
   (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
 
 const App = () => {
-  const imageFileInitialValue = { src: null, width: NaN, height: NaN };
+  const imageFileInitialValue = {
+    src: null,
+    name: null,
+    type: null,
+    width: NaN,
+    height: NaN,
+  };
   const [imageFile, setImageFile] = useState(imageFileInitialValue);
   // const [canvas, updateCanvas] = useState(null);
+  const [isBoardSelected, setIsBoardSelected] = useState(false);
   const [boardFormat, setBoard] = useState([
     {
       id: 0,
@@ -25,7 +32,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 1,
-          value: "placeholder",
+          value: "",
           offsetX: 126,
           offsetY: 6,
           width: 186,
@@ -36,7 +43,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 1,
-          value: "placeholder",
+          value: "",
           offsetX: 126,
           offsetY: 42,
           width: 186,
@@ -47,7 +54,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 4,
-          value: "placeholder",
+          value: "",
           offsetX: 126,
           offsetY: 78,
           width: 186,
@@ -58,7 +65,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 4,
-          value: "placeholder",
+          value: "",
           offsetX: 12,
           offsetY: 114,
           width: 298,
@@ -67,7 +74,7 @@ const App = () => {
       ],
       active: true,
       color: "#000000",
-      fontSize: 30,
+      fontSize: 20,
     },
     {
       id: 1,
@@ -79,7 +86,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 1,
-          value: "placeholder",
+          value: "",
           offsetX: 126,
           offsetY: 6,
           width: 186,
@@ -90,7 +97,7 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 1,
-          value: "placeholder",
+          value: "",
           offsetX: 126,
           offsetY: 42,
           width: 186,
@@ -101,7 +108,18 @@ const App = () => {
           type: "text",
           maxRow: 8,
           maxCol: 4,
-          value: "placeholder",
+          value: "",
+          offsetX: 126,
+          offsetY: 78,
+          width: 186,
+          height: 36,
+        },
+        {
+          label: "自由記入欄",
+          type: "text",
+          maxRow: 8,
+          maxCol: 4,
+          value: "",
           offsetX: 12,
           offsetY: 114,
           width: 298,
@@ -110,16 +128,14 @@ const App = () => {
       ],
       active: false,
       color: "#ffffff",
-      fontSize: 30,
+      fontSize: 20,
     },
   ]);
   const inputRef = useRef(null);
 
   const handleChangeFile = (files) => {
-    // console.table(files);
-    // TODO: 画像判定入れる
-    if (!files.length) {
-      // setImageFile("");
+    console.table(files);
+    if (!files.length || !files[0].type.includes("image/")) {
       return;
     }
     const imageUrl = createObjectURL(files[0]);
@@ -129,6 +145,8 @@ const App = () => {
     image.onload = () => {
       const newImage = {
         src: imageUrl,
+        name: files[0].name,
+        type: files[0].type,
         width: image.width,
         height: image.height,
       };
@@ -163,19 +181,33 @@ const App = () => {
 
   return (
     <div className="App">
-      <header
-        className={imageFile.src ? "App-header active" : "App-header"}
-      >
+      <header className={imageFile.src ? "App-header active" : "App-header"}>
         <h1>
-          <span role="img" aria-label="Construction">🚧</span>
-          <span role="img" aria-label="Construction">🚧</span>
-          <span role="img" aria-label="Pick">⛏️</span>
-          <span role="img" aria-label="Camera">📷</span>
+          <span role="img" aria-label="Construction">
+            🚧
+          </span>
+          <span role="img" aria-label="Construction">
+            🚧
+          </span>
+          <span role="img" aria-label="Pick">
+            ⛏️
+          </span>
+          <span role="img" aria-label="Camera">
+            📷
+          </span>
           工事写真合成アプリ
-          <span role="img" aria-label="Tractor">🚜</span>
-          <span role="img" aria-label="Construction Worker">👷</span>
-          <span role="img" aria-label="Construction">🚧</span>
-          <span role="img" aria-label="Construction">🚧</span>
+          <span role="img" aria-label="Tractor">
+            🚜
+          </span>
+          <span role="img" aria-label="Construction Worker">
+            👷
+          </span>
+          <span role="img" aria-label="Construction">
+            🚧
+          </span>
+          <span role="img" aria-label="Construction">
+            🚧
+          </span>
         </h1>
       </header>
       <main>
@@ -183,17 +215,23 @@ const App = () => {
           imageFile={imageFile}
           boardFormat={boardFormat}
           handleChangeFile={handleChangeFile}
+          isBoardSelected={isBoardSelected}
+          setIsBoardSelected={setIsBoardSelected}
         />
         <ImageUploadForm
           inputRef={inputRef}
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}
         />
-        {imageFile.src && <Controller
-          boardFormat={boardFormat}
-          updateBoardSelect={updateBoardSelect}
-          updateInput={updateInput}
-        />}
+        {imageFile.src && (
+          <Controller
+            imageFile={imageFile}
+            boardFormat={boardFormat}
+            updateBoardSelect={updateBoardSelect}
+            updateInput={updateInput}
+            setIsBoardSelected={setIsBoardSelected}
+          />
+        )}
       </main>
     </div>
   );

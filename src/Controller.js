@@ -1,12 +1,30 @@
 import React from "react";
 
 const Controller = (props) => {
-  const { boardFormat, updateInput, updateBoardSelect } = props;
+  const {
+    boardFormat,
+    imageFile,
+    updateInput,
+    updateBoardSelect,
+    setIsBoardSelected,
+  } = props;
   const activeBoard = boardFormat.filter((board) => board.active)[0];
-  const inputs = boardFormat[activeBoard.id].inputs;
   return (
     <div>
-      <h2>黒板の操作</h2>
+      <h2>合成結果ダウンロード</h2>
+      <button
+        onClick={() => {
+          setIsBoardSelected(false);
+          const canvas = document.querySelector(".konvajs-content canvas");
+          const link = document.createElement("a");
+          link.href = canvas.toDataURL("image/png");
+          link.download = imageFile.name + "_modified.png";
+          link.click();
+        }}
+      >
+        ダウンロード
+      </button>
+      <h2>テンプレート選択</h2>
       <select onChange={(e) => updateBoardSelect(e)}>
         {boardFormat.map((board) => {
           return (
@@ -16,21 +34,22 @@ const Controller = (props) => {
           );
         })}
       </select>
+      <h2>テキスト操作</h2>
       <table className="controller-table">
         <tbody>
-          {inputs.map((input, i) => {
+          {activeBoard.inputs.map((input, i) => {
             const id = `board-input-${activeBoard.id}-${i}`;
             return (
               <tr key={id}>
                 <td>
-                  <label for={id}>
-                    {input.label}
-                  </label>
+                  <label htmlFor={id}>{input.label}</label>
                 </td>
                 <td>
                   <input
                     id={id}
-                    onChange={(e) => updateInput(e.target.value, i, activeBoard.id)}
+                    onChange={(e) =>
+                      updateInput(e.target.value, i, activeBoard.id)
+                    }
                     value={input.value}
                     type={input.type}
                   />
