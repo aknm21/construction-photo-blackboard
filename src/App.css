@@ -1,14 +1,14 @@
 html {
-  background-color: #13161b;
+  background-color: #fcbf1e;
   background-image: repeating-linear-gradient(
     135deg,
-    #13161b,
-    #13161b 20px,
-    #222831 20px,
-    #222831 24px
+    #fcbf1e,
+    #fcbf1e 20px,
+    #fdd052 20px,
+    #fdd052 24px
   );;
   background-attachment: fixed;
-  color: #cccccc;
+  color: #120136;
 }
 
 .controller-table {
@@ -17,7 +17,7 @@ html {
 
 .konvajs-content {
   box-shadow: 0 0 3px 1px rgba(255,255,255,1) inset;
-  background-color: #13161b;
+  background-color: #fdd052;
 }
 
 .konvajs-content canvas {
@@ -45,42 +45,16 @@ html {
   text-align: center;
 }
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
-
 .App-header {
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(5px + 1vmin);
   transition: font-size 1s;
-  color: white;
   margin-bottom: 1em;
 }
 
 .App-header.active {
   font-size: calc(5px + 0.5vmin);
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
