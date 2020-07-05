@@ -67,6 +67,15 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
+## What's this?
+
+Compose a blackboard to the image like a 工事写真.
+Inspired by the article at [「自撮り工事写真棒」でプラモライフを記録していこうヨシ！ | nippper](https://nippper.com/2020/06/4143/).
+
+## Stocks
+
+[The best Favicon Generator (completely free)](https://favicon.io/emoji-favicons/construction/)
+
 ## MEMO
 
 ### 類似アプリ先行事例

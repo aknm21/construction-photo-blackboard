@@ -195,7 +195,7 @@ const App = () => {
           <span role="img" aria-label="Camera">
             📷
           </span>
-          工事写真合成アプリ
+          工事写真風黒板合成アプリ
           <span role="img" aria-label="Tractor">
             🚜
           </span>
