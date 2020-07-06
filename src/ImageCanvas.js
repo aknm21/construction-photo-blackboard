@@ -150,18 +150,18 @@ const ImageCanvas = (props) => {
     e.preventDefault();
     e.stopPropagation();
     e.target.classList.add("dragover");
-    console.log("handleDragEnter");
+    // console.log("handleDragEnter");
   };
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
     e.target.classList.remove("dragover");
-    console.log("handleDragLeave");
+    // console.log("handleDragLeave");
   };
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("handleDragOver");
+    // console.log("handleDragOver");
   };
   const handleDrop = (e) => {
     e.preventDefault();
@@ -175,7 +175,7 @@ const ImageCanvas = (props) => {
     }
     // console.log(fileInput);
     handleChangeFile(files);
-    console.log("handleDrop");
+    // console.log("handleDrop");
   };
 
   return (

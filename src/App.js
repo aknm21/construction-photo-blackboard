@@ -134,7 +134,7 @@ const App = () => {
   const inputRef = useRef(null);
 
   const handleChangeFile = (files) => {
-    console.table(files);
+    // console.table(files);
     if (!files.length || !files[0].type.includes("image/")) {
       return;
     }
