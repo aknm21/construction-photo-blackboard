@@ -24,17 +24,28 @@ const Controller = (props) => {
       >
         ダウンロード
       </button>
-      <h2>テンプレート選択</h2>
-      <select onChange={(e) => updateBoardSelect(e)}>
-        {boardFormat.map((board) => {
-          return (
-            <option key={board.id} value={board.id}>
-              {board.name}
-            </option>
-          );
-        })}
-      </select>
-      <h2>テキスト操作</h2>
+      <h2>黒板テンプレート選択</h2>
+      <ul>
+        {boardFormat.map((board) => (
+          <li key={board.id} className="controller-board-select-list">
+            <img
+              src={board.svgCode}
+              alt={board.name}
+              width="150"
+              onClick={() => updateBoardSelect(board.id)}
+            />
+            <br />
+            <input
+              type="radio"
+              value={board.id}
+              checked={board.active}
+              onChange={() => updateBoardSelect(board.id)}
+            />
+            {board.name}
+          </li>
+        ))}
+      </ul>
+      <h2>テキスト入力</h2>
       <table className="controller-table">
         <tbody>
           {activeBoard.inputs.map((input, i) => {

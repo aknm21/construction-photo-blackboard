@@ -164,8 +164,8 @@ const App = () => {
     setImageFile(imageFileInitialValue);
   };
 
-  const updateBoardSelect = (e) => {
-    const targetID = Number(e.target.value);
+  const updateBoardSelect = (targetID) => {
+    // const targetID = Number(e.target.value);
     const updated = boardFormat
       .slice()
       .map((board) => Object.assign(board, { active: board.id === targetID }));
@@ -223,7 +223,6 @@ const App = () => {
           clearImageSrc={clearImageSrc}
           handleChangeFile={handleChangeFile}
         />
-        {imageFile.src && (
           <Controller
             imageFile={imageFile}
             boardFormat={boardFormat}
@@ -231,7 +230,6 @@ const App = () => {
             updateInput={updateInput}
             setIsBoardSelected={setIsBoardSelected}
           />
-        )}
       </main>
     </div>
   );
